@@ -8,7 +8,7 @@ app.use(express.json()); // include this middleware to put body data
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
 //read all object data
-app.get('/api/v1/tours', (req,res)=>{
+const readAllObject = (req,res)=>{
 
     res.status(200).json({
         message: 'success',
@@ -17,22 +17,22 @@ app.get('/api/v1/tours', (req,res)=>{
             tours
         }
     });
-});
+}
 
 //read specific data
-app.get('/api/v1/tours/:id', (req, res) => {  // responding to url parameters
+const readSingleObject = (req, res) => {  // responding to url parameters
 
     //console.log(req.params); // req.params are store all the variable store inside the url
 
     const id = req.params.id * 1; // convert string to number & javascript will convert it when we multipy it by a number;
     const tour = tours.find(el => el.id === id); // javascrit find that specific element from an array
-
+    
     // if(id>tours.length)
     if(!tour)
     {
-        res.status(404).json({
-            status:'fail',
-            message:'Invalid id'
+        return res.status(404).json({
+            status: 'Fail',
+            message: 'Invalid Id!'
         });
     } 
 
@@ -42,10 +42,10 @@ app.get('/api/v1/tours/:id', (req, res) => {  // responding to url parameters
             tours: tour
         }
     });
-});
+}
 
 //create data
-app.post('/api/v1/tours', (req,res)=>{
+const createObject = (req,res)=>{
     
     // express doesn't put body data to request that's why we need middleware
     // console.log(req.body);
@@ -64,14 +64,14 @@ app.post('/api/v1/tours', (req,res)=>{
 
         });
     });
-});
+}
 
 //update data
-app.patch('/api/v1/tours/:id', (req,res)=>{
+const updateObject = (req,res)=>{
 
     if(req.params.id * 1 > tours.length )
     {
-        res.status(404).json({
+        return res.status(404).json({
             status:'fail!',
             message:'Invalid id'
         });
@@ -101,14 +101,14 @@ app.patch('/api/v1/tours/:id', (req,res)=>{
         });
     });
 
-});
+}
 
 //delete data
-app.delete('/api/v1/tours/:id' , (req,res) =>{
+const DeleteObject = (req,res) =>{
 
-    if(req.body.id * 1> tours.length)
+    if(req.params.id * 1> tours.length)
     {
-        res.status(404).json({
+        return res.status(404).json({
             status: 'Fail',
             message: 'Invalid Id!'
         });
@@ -127,7 +127,14 @@ app.delete('/api/v1/tours/:id' , (req,res) =>{
 
         });
     });
-});
+}
+
+app.get('/api/v1/tours',readAllObject);
+app.get('/api/v1/tours/:id',readSingleObject);
+app.post('/api/v1/tours',createObject);
+app.patch('/api/v1/tours/:id',updateObject );
+app.delete('/api/v1/tours/:id',DeleteObject);
+
 
 app.listen(port, ()=>{
     console.log(`App running on port ${port}..`);
