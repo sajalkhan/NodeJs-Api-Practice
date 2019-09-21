@@ -7,11 +7,24 @@ const port = 8080;
 app.use(express.json()); // include this middleware to put body data 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
+
+app.use((req,res,next)=>{
+
+    console.log('Hello from middleware');
+    next();
+});
+
+app.use((req,res,next)=>{
+    req.requestTime = new Date().toISOString();
+    next();
+});
+
 //read all object data
 const readAllObject = (req,res)=>{
 
     res.status(200).json({
         message: 'success',
+        requestTime: req.requestTime,
         result: tours.length,
         data:{
             tours
@@ -147,7 +160,7 @@ app
    .patch(updateObject)
    .delete(DeleteObject);
 
-   
+
 app.listen(port, ()=>{
     console.log(`App running on port ${port}..`);
 });
