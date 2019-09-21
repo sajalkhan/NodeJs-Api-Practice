@@ -129,13 +129,25 @@ const DeleteObject = (req,res) =>{
     });
 }
 
-app.get('/api/v1/tours',readAllObject);
-app.get('/api/v1/tours/:id',readSingleObject);
-app.post('/api/v1/tours',createObject);
-app.patch('/api/v1/tours/:id',updateObject );
-app.delete('/api/v1/tours/:id',DeleteObject);
+// app.get('/api/v1/tours',readAllObject);
+// app.get('/api/v1/tours/:id',readSingleObject);
+// app.post('/api/v1/tours',createObject);
+// app.patch('/api/v1/tours/:id',updateObject );
+// app.delete('/api/v1/tours/:id',DeleteObject);
 
 
+app
+   .route('/api/v1/tours')
+   .get(readAllObject)
+   .post(createObject);
+
+app
+   .route('/api/v1/tours/:id')
+   .get(readSingleObject)
+   .patch(updateObject)
+   .delete(DeleteObject);
+
+   
 app.listen(port, ()=>{
     console.log(`App running on port ${port}..`);
 });
