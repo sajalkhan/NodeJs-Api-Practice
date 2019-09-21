@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+const morgan = require('morgan');
 
 const app = express();
 const port = 8080;
@@ -7,6 +8,7 @@ const port = 8080;
 app.use(express.json()); // include this middleware to put body data 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
 
+app.use(morgan('dev'));
 
 app.use((req,res,next)=>{
 
