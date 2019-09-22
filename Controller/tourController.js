@@ -18,6 +18,17 @@ exports.checkId = (req,res,next,val)=>
     next();
 }
 
+exports.checkBody = (req,res,next)=>{
+    if(!req.body.name || !req.body.price)
+    {
+        return res.status(400).json({
+            status: 'Fail',
+            message: 'Name or Price Not Found!'
+        });
+    }
+    next
+}
+
 //read all object data
 exports.readAllObject = (req,res)=>{
 

@@ -8,7 +8,7 @@ router.param('id', tourController.checkId); // param middleware it will check pa
 router
 .route('/')
 .get(tourController.readAllObject)
-.post(tourController.createObject);
+.post(tourController.checkBody, tourController.createObject); // chaining middleware means multiple function will call one by one
 
 router
 .route('/:id')
