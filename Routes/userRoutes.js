@@ -1,26 +1,10 @@
 const express = require('express');
-
-
-const readUser = (req,res) =>{
-    res.status(200).json({
-        status: 'ok',
-        message: 'this method is under construction!'
-    });
-}
-
-const CreateUser = (req,res) =>{
-    res.status(200).json({
-        status: 'ok',
-        message: 'this method is under construction!'
-    });
-}
-
-
+const userController = require('./../Controller/userController');
 const router = express.Router();
 
 router
     .route('/')
-    .get(readUser)
-    .post(CreateUser);
+    .get(userController.readUser)
+    .post(userController.createUser);
 
 module.exports = router;
