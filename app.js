@@ -144,24 +144,39 @@ const DeleteObject = (req,res) =>{
     });
 }
 
+const readUser = (req,res) =>{
+    res.status(200).json({
+        status: 'ok',
+        message: 'this method is under construction!'
+    });
+}
+
 // app.get('/api/v1/tours',readAllObject);
 // app.get('/api/v1/tours/:id',readSingleObject);
 // app.post('/api/v1/tours',createObject);
 // app.patch('/api/v1/tours/:id',updateObject );
 // app.delete('/api/v1/tours/:id',DeleteObject);
 
+const tourRouter = express.Router(); // here i add a middleware
+const userRouter = express.Router();
 
-app
-   .route('/api/v1/tours')
+tourRouter
+   .route('/')
    .get(readAllObject)
    .post(createObject);
 
-app
-   .route('/api/v1/tours/:id')
+tourRouter
+   .route('/:id')
    .get(readSingleObject)
    .patch(updateObject)
    .delete(DeleteObject);
 
+userRouter
+    .route('/')
+    .get(readUser);
+
+app.use('/api/v1/tours', tourRouter); // mount those route and it's always set bottom all of the route module
+app.use('/api/v1/user', userRouter);
 
 app.listen(port, ()=>{
     console.log(`App running on port ${port}..`);
