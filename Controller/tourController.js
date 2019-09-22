@@ -2,6 +2,22 @@ const fs = require('fs');
  
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`));
 
+// when we insert invalid id it will throw this error and by this method we replace all duplicate error message
+// and from now we don't need to worry about validation inside the route handler we will do it here
+exports.checkId = (req,res,next,val)=>
+{
+    console.log(`Tour id is ${val}`);
+
+    if(req.params.id * 1> tours.length)
+    {
+        return res.status(404).json({
+            status:'Fail!',
+            message:'Invalid Id'
+        });
+    }
+    next();
+}
+
 //read all object data
 exports.readAllObject = (req,res)=>{
 
@@ -23,15 +39,6 @@ exports.readSingleObject = (req, res) => {  // responding to url parameters
     const id = req.params.id * 1; // convert string to number & javascript will convert it when we multipy it by a number;
     const tour = tours.find(el => el.id === id); // javascrit find that specific element from an array
     
-    // if(id>tours.length)
-    if(!tour)
-    {
-        return res.status(404).json({
-            status: 'Fail',
-            message: 'Invalid Id!'
-        });
-    } 
-
     res.status(200).json({
         message: 'success',
         data: {
@@ -64,15 +71,7 @@ exports.createObject = (req,res)=>{
 
 //update data
 exports.updateObject = (req,res)=>{
-
-    if(req.params.id * 1 > tours.length )
-    {
-        return res.status(404).json({
-            status:'fail!',
-            message:'Invalid id'
-        });
-    }
-
+    
     const id = req.params.id * 1;
     const tour = tours.find(el => el.id === id);
     const reqObj = req.body;
@@ -101,14 +100,6 @@ exports.updateObject = (req,res)=>{
 
 //delete data
 exports.DeleteObject = (req,res) =>{
-
-    if(req.params.id * 1> tours.length)
-    {
-        return res.status(404).json({
-            status: 'Fail',
-            message: 'Invalid Id!'
-        });
-    }
 
     const id = req.params.id * 1;
     tours.splice(id,1);
