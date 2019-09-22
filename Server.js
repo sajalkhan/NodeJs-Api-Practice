@@ -16,6 +16,39 @@ mongoose.connect(DB,{
 })
 .then(()=> console.log('Db Connection Successful!') );
 
+
+const tourSchema = mongoose.Schema({
+    name: {
+        type: String,
+        require: [true,'A tour must have a name'],
+        unique: true
+    },
+    rating: {
+        type: Number,
+        default: 4.2
+    },
+    price: {
+        type: Number,
+        require: [true,'A tour must have a price']
+    }
+});
+
+const Tour = mongoose.model('Tour',tourSchema);
+const testTour = new Tour({
+    name: 'sajal',
+    rating: 4.5,
+    price: 100
+});
+
+testTour
+    .save()
+    .then(doc =>{
+    console.log(doc);
+})
+.catch(err=>{
+    console.log('error: '+err);
+});
+
 const port = process.env.PORT || 8080;
 
 app.listen(port, ()=>{
