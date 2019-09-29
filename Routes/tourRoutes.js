@@ -3,12 +3,12 @@ const tourController = require('./../Controller/tourController');
 
 const router = express.Router(); // here i add a middleware
 
-router.param('id', tourController.checkId); // param middleware it will check parameter id
+// router.param('id', tourController.checkId); // param middleware it will check parameter id
 
 router
 .route('/')
 .get(tourController.readAllObject)
-.post(tourController.checkBody, tourController.createObject); // chaining middleware means multiple function will call one by one
+.post(tourController.createObject); 
 
 router
 .route('/:id')
